@@ -13,12 +13,19 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Welcome to <a href="https://veritoot.com">Veritoot</a>
         </h1>
 
         <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.tsx</code>
+          So, obviously this is Next.js boilerplate. Waiting for the domain to carry over. 
+
+          Eventually this will be the home to two projects: 
+
+          Veritoot - a verification-as-a-service application for the Mastodon and other federated networks that is geared towards reliability and transparency. 
+
+          OpenVeritoot - The software needed to host your own verification-as-a-service for Mastodon. 
+
+          More details to come, just wanted to get this out there. 
         </p>
 
         <div className={styles.grid}>
