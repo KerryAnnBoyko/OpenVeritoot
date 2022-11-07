@@ -1,111 +1,97 @@
-# OurSpaceSocialNetwork (working title)
+# OpenVeritoot (working title)
 
-Okay, I'll admit that I never took the idea that Musk would buy Twitter seriously. And then I didn't realise how quickly he would make decisions that would drive everything that was actually useful and valuable about Twitter into the ground. 
-
-But here's the thing about Twitter.  Musk paid $44B for a web application that... well, it can't be *that* hard to actually build.  Otherwise there wouldn't be Mastadon and all those crazy right-wing sites popping up. Hard to scale? Sure. Hard to manage? Probably. But not to build. 
-
-And while we're building it, why not make some improvements too?
-
+This is for a semi-centralized verification-as-a-service service. Theoretically anyone could operate this.  It is designed to be used with the Mastodon federated network, but could be used more generally with other networks as need be.  
 ## The vision
 
-The vision is for a microblogging site (posts will be limited to 512 characters) with the following features: 
+OpenVeritoot will operate a database which will contain information on various social media accounts to determine which social media accounts actually belong to the users they claim to be.  For example, right now, anyone can claim the name @barackobama@mastodon.social or any number of accounts across the Mastodon federated network.  
 
-* Every USER geta a profile. This will contain a login, display name, profile description, an optional location, an optional link, an icon (image), a masthead (image). 
-  * Users can follow other users
-  * Users can block other users
-  * Users can have conversations with other users
-* Every USER can make POSTS. The post will contain content (512 chars)
-  * POSTS can use TAGS (using the #hashtag syntax)
-  * POSTS can mention USERS (using the @at syntax)
-  * POSTS can quote other posts
-  * POSTS can reply to other posts
-  * POSTS can be reposts of other people's posts
-* USERS can REPORT POSTS for conduct/TOS violations
-* Some USERS will be designated as AUTHORITIES of a specific field, and can issue VERIFICATIONS to USERs. (See below)
-  * AUTHORITIES have access to a set of VERIFICATIONS
-  * VERIFICATIONS are titles awarded to USERS primarily to establish that the account is who they say they are, or that they represent who they claim to represent. 
+There is a method for verifying an account is associated with a particular website built into Mastodon, simply by placing a special anchor tag somewhere on the html of a website - which proves that the social media account is associated with that website, at least.  However, that can be spoofed with a similar named website that would at first glance, fool "a moron in a hurry".  
 
+The idea is to create the software needed to run a verification service platform.  What it would do is use client-side routing to generate very simple webpages which can be used to verify users by hosting the anchor tag.  
 
-## How AUTHORITIES and VERIFICATIONS work
+This can be expanded to qualify exactly what kinds of verifications exist for the user with the use of query tags. 
 
-Basically, AUTHORITIES are subject matter experts or otherwise qualified users who can determine identity.  
+So, for example:
 
-For example, a user creates an account called @offical_new_zealand_parliament and applies directly with the administrators of OurSpaceSocialNetwork(Working Title) for the AUTHORITY: "New Zealand Parliament", with the following VERIFICATIONS: "Member of Parliament", "Candidate for Parliament", "Prime Minister", "Official Governmental Organization", and "Mayor of Wellington".  
+```text
+GET http://veritoot.com/v/@barackobama@mastodon.social/
 
-The Administrators then contact @official_new_zealand_parliament and ask them to do something that only they could do - for example, placing a code on the parliament.gov.nz website.  Once that code has been verified, they will be issued the authority: "New Zealand Parliament", AND automatically the verification: "Authority: New Zealand Parliament"
+returns a webpage with 
 
-So far, so good. 
+<a rel="me" href="https://mastodon.social/@barackobama">Barack Obama on Mastodon (mastodon.social)</a>
+```
 
-Of the verifications they have asked for, they are immediately issued "Member of Parliament", "Candidate for Parliament", "Prime Minister", "Official Government Organization", as well as the generic: "Official" and "Disavowed". The last one - Mayor of Wellington - is not issued immediately, as it is not certain whether the New Zealand Parliament is the appropriate authority for a regional mayoralty. (It may be, but err on doubt). @official_new_zealand_parliament MAY reapply for that verification giving further supporting documents as to why they should have that verification. 
+@barackobama@mastodon.social can now link back to http://veritoot.com/v/@barackobama@mastodon.social/ and it will show as correctly verified. 
 
-But in any case, they have access to the other four verifications, plus "official" and "disavowed". 
+Furthermore, different authorities can provide different types of qualifications.  Specifically, when a user is verified users know:
 
-There are three accounts in question: @jacinda_ardern, @ronald_frump, @prime_minister_of_new_zealand.
+* Who is this account?  Are they who they claim to be?
+* Why are they considered notable?  Are they subject matter experts in what they claim? 
+* Who made the decision to verify this user?
 
-@jacinda_ardern is the actual prime minister of New Zealand and can prove to the satisfaction of @official_new_zealand_parliament that it really is her.  
-@ronald_frump claims that the election was rigged and that he should be the prime minister of New Zealand.
-@prime_minister_of_new_zealand is the account for the *office*, not the person, of prime minister of New Zealand. 
+For that reason, verifications are not made by the server owner (although it could be the server owner), but by 'authority' accounts, primarily assigned to appropriate organizations. For example, let's say that the New York Times signs up to be an authority. The server owner verifies the authority is who they claim to be/represent.  The NYT applies for "verifications" - specific tags that they can put on a user.  
 
-@official_new_zealand_government issues the following Verifications: 
-* @jacenda_ardern: "Member of Parliament", "Prime Minister"
-* @prime_minister_of_new_zealand, "Prime Minister", "Official", "Official Government Organization"
-* @ronald_frump: "Disavowed"
+Expanding it further: 
 
-On their profiles, it will read as follows:
+```text
+GET http://veritoot.com/v/@barackobama@mastodon.social/
 
-* @jacenda_ardern
-  * New Zealand Parliament has authorized:
-    * Member of Parliament
-    * Prime Minister
-* @prime_minister_of_new_zealand
-  * An Official account of New Zealand Parliment
-  * New Zealand Parliament has authorized:
-    * Official Government Organization
-    * Prime Minister
-* @ronald_frump
-  * New Zealand Parliament has disavowed Ronald Frump. 
+returns a webpage with 
 
-Of course, multiple authorities could overlap and provide different verifications.  For example, @jacinda_ardern's full profile could read: 
+<a rel="me" href="https://mastodon.social/@barackobama">Barack Obama on Mastodon (mastodon.social)</a>
 
-* @jacenda_ardern
-  * New Zealand Parliament has authorized:
-    * Member of Parliament
-    * Prime Minister
-  * New Zealand Labour Party has authorized:
-    * Member of the Labour Party
-    * Leader of the Labour Party
-  * OSSN Administration
-    * Public Figure (Regional - New Zealand)
-    * Celebrity (Regional - New Zealand)
+| VERIFICATION   | auth                         |
+|----------------|------------------------------|
+| POLITICIAN     | /a/new_york_times            |
+| US_PRESIDENT   | /a/new_york_times            |
+| CELEBRITY      | /a/veritoot_staff            |
+| NETFLIX        | /a/netflix_official          |
+| BORN_IN_HAWAII | /a/secretary_of_state_hawaii |
 
-### Why this approach?
+```
+
+What's more, via query parameters, the GET request can also determine if the user has the *exact* verification.  
+
+```text
+GET http://veritoot.com/v/@barackobama@mastodon.social/?verified=['politician','born_in_hawaii']
+
+returns the website, as above, with a 200 success. 
+
+BUT 
+
+GET http://veritoot.com/v/@barackobama@mastodon.social/?verified=['hosted_saturday_night_live']
+
+would return a 404 page.  
+
+```
+
+## Okay, why?
 
 The problem with verification is that ultimately, someone has to make the determination whether or not someone is who they claim to be (the "blue checkmark" problem).  In the case of Twitter, that was entirely the determination of the Twitter staff.  And that worked well enough but now there's a problem; because the criteria for that verification is no longer: "Is who they claim to be according to the Twitter staff" but rather "is willing to pay $8/mo for a blue checkmark." At the end of the day, the decisions of Twitter were ultimately arbitrary, so the criteria can change on a dime with new ownership. 
 
-### Is this a viable approach?
+Indeed, the problem is that twitter verification is too centralized - ONLY twitter staff can issue verifications, and that staff is under the instructions of the ownership. 
 
-Technically, sure. I'm not sure it's viable as a company - as the options for revenue generation are problematic (as they were with the real Twitter).  And there's problems of scale; operating this on a small virtual server as a proof of concept isn't that hard, what becomes hard is when there are millions of users and billions of accounts.  
+And the ownership has lost the plot, suspending and deleting accounts critical of the ownership. 
 
-### What about that technical approach?
-
-For right now I think the best approach is to use a PostgreSQL relational database for most of the core information. (A graph database was considered but might not be appropriate for this problem).  Some data will be stored in a NoSQL document Mongo database (conversations, for example, can be of arbitrary length - it may be best to store that information in a Mongo DB and just reference the MongoID in the PSQL tables)
-
-Ideally we'd have some sort of authorization setup - Auth0 seems to be a good way to handle this without having to assume all the risk of storing sensitive data ourselves.  With that auth setup, we can use JWT to set up an API for the database using Node/Bun and a server framework (Express/Koa, etc.) 
-
-Since everything would be powered from the API, the choice of front-end framework doesn't really matter. I like React, but this could be done with Preact, Vue, anything, really. 
-
-Long story short? The problem is *big* but it's not complex.  It's very doable, even by a small dedicated team of engineers.  In many ways it's already been done by Mastodon. 
-
-## If it's already been done by Mastodon, why not use/improve Mastodon?
-
-I think that Mastodon is great for it's vision of a decentralized social network, with small servers running on specific niches.  But centralization was actually one of Twitter's key selling points, as only a central authority could really determine things such as verification. 
+I think that Mastodon is great for it's vision of a decentralized social network, with small servers running on specific niches.  But what it lacks is a way not only to identify high profile users but to find them as well.  
 
 That little blue checkmark was actually Twitter's killer app.  With it, celebrities and other "high value" users would be willing to use their own accounts instead of hiring some social media manager. It allowed for accessibility and authenticity that just couldn't be found in other social media networks. And because Twitter was where you - an average person - could actually have a public (or private!) conversation with celebrities you adored and respected without a whole lot of barrier between you, it became world-changing even when Facebook was gobbling up every other social media network out there (such as Instagram and WhatsApp).  
 
 By having Musk suggest that users pay $20 a month or even $8 a month for that blue checkmark, all of a sudden, that checkmark becomes worthless - if I can create @the_real_barack_obama_for_realsies_no_fooling and get a blue checkmark by paying $8/mo, then the actual Barack Obama has no reason to even associate with the platform. Indeed, that may drive the high value users - the real content creators of the social network! - off the site onto... well, onto something else. 
 
-## Are you actually planning to build this yourself?
+### Is this a viable approach?
 
-Eh... maybe. I work a 9/5 day job which I have to keep because I'm on a work visa for the UK. I also have other hobbies and friends. So I can't put my full time into this.  Do I think I could get something like this started?  Sure.  Maybe if it has legs we can see what happens from there.  Right now this is just a Readme, a proposed SQL schema, and a few docs.
+Technically, sure. I'm not sure it's viable as a company - as the options for revenue generation are problematic (as they were with the real Twitter).  And there's problems of scale; operating this on a small virtual server as a proof of concept isn't that hard, what becomes hard is when there are millions of users and billions of accounts.  That's why I do plan to build out veritoot.com on my own but will make the source code open-source so anyone can operate their own verification server. 
 
+It's also very much in keeping with the "mastodon way".  
+### What about that technical approach?
+
+For right now I think the best approach is to use a PostgreSQL relational database for most of the core information. 
+
+Ideally we'd have some sort of authorization setup - Auth0 seems to be a good way to handle this without having to assume all the risk of storing sensitive data ourselves.  With that auth setup, we can use JWT to set up an API for the database using Node/Bun and a server framework (Express/Koa, etc.) 
+
+Since everything would be powered from the API, the choice of front-end framework doesn't really matter. I like Next.js and will probably use that to build everything out.  
+
+It's very doable.  
 Who knows.  
+
