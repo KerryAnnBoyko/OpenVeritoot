@@ -16,63 +16,35 @@ export default function Home() {
           Welcome to <a href="https://veritoot.com">Veritoot</a>
         </h1>
 
-        <p className={styles.description}>
-          So, obviously this is Next.js boilerplate. Waiting for the domain to carry over. 
+        <p className={styles.description}>So, obviously this is Next.js boilerplate. Waiting for the domain to carry over. </p>
 
-          Eventually this will be the home to two projects: 
+        <p className={styles.description}>Eventually this will be the home to two projects:  </p>
 
-          Veritoot - a verification-as-a-service application for the Mastodon and other federated networks that is geared towards reliability and transparency. 
+        <p className={styles.description}>Veritoot - a verification-as-a-service application for the Mastodon and other federated networks that is geared towards reliability and transparency.  </p>
 
-          OpenVeritoot - The software needed to host your own verification-as-a-service for Mastodon. 
+        <p className={styles.description}>OpenVeritoot - The software needed to host your own verification-as-a-service for Mastodon.  </p>
 
-          More details to come, just wanted to get this out there. 
+        <p className={styles.description}>More details to come, just wanted to get this out there.  </p>
         </p>
+        <hr/>
+        <h2>What the heck is this?</h2>
+        <p className={styles.description}> Right now, there's no "verified user" status on Mastodon - by design. But you can link your #mastodon account is associated with a particular website, by putting a link into the HTML of that site. </p>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+        <p className={styles.description}>#OpenVeritoot will be a system that  sets up a DB & site for a third party to verify you are who you say you are by setting up a site containing that link. #Veritoot is the first service using #OpenVeritoot.</p> 
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+        <p className={styles.description}>#OpenVeritoot will be a system that  sets up a DB & site for a third party to verify you are who you say you are by setting up a site containing that link. #Veritoot is the first service using #OpenVeritoot.</p> 
 
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+        <p className={styles.description}>So for example, let's say that @cotterpin@mastodon.doozer is claiming that THEY are Cotterpin Doozer, but so is @convincingjohn@mastodon.fraggle. </p>
+  
+        <p className={styles.description}>#Veritoot (or other #OpenVeritoot service) can set up a link on their verification site: http://[servicename]/[verifying party]/@cotterpin@mastadon.doozer, which contains the "rel=me" code, this shows up in the bio as a green link, thus if you trust the service and the verifying party, you can trust that @cotterpin is Cotterpin Doozer.</p>
+  
+        <p className={styles.description}>You can get more granular too, and even have professional qualifications. </p>
 
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+        <p className={styles.description}>Assume the service is Veritoot and the verifying party is "Doozer University".  Doozer University not only qualifies that Cotterpin is who she says she is, but also that she has expertise in the following areas: Architecture, Civil Engineering, Fraggle Relations.</p>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+        <p className={styles.description}>Those qualifications could be added on as a query string, and only when they match the qualifications in the DB is the rel=me link shown.</p>
+
+          
     </div>
   )
 }
