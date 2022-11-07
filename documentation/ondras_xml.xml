@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- SQL XML created by WWW SQL Designer, https://github.com/ondras/wwwsqldesigner/ -->
 <!-- Active URL: https://ondras.zarovi.cz/sql/demo/ -->
+<!-- some of these text items are actually going to be jsonb in Postgres -->
 <sql>
 <datatypes db="postgresql">
     <group label="Integer" color="rgb(238,238,170)">
