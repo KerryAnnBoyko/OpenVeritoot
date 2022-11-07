@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- SQL XML created by WWW SQL Designer, https://github.com/ondras/wwwsqldesigner/ -->
-<!-- Active URL: https://ondras.zarovi.cz/sql/demo/?keyword=default -->
+<!-- Active URL: https://ondras.zarovi.cz/sql/demo/ -->
 <sql>
-<datatypes db="mssql">
+<datatypes db="postgresql">
     <group label="Integer" color="rgb(238,238,170)">
       <type label="TinyInt" length="0" sql="tinyint" re="INT" quote="" bytes="1" note="Integer data: 0 to 255"/>
       <type label="SmallInt" length="0" sql="smallint" re="INT" quote="" bytes="2" note="Integer data: -32,768 to 32,767"/>
@@ -45,7 +45,7 @@
       <type label="SQL Variant" length="1" sql="sql_variant" quote="" bytes="" note="Stores any datatype except text, ntext, image, timestamp"/>
       <type label="Uniqueidentifier" length="1" sql="uniqueidentifier" quote="" bytes="16" note="GUID"/>
     </group>
-  </datatypes><table x="808" y="365" name="verification">
+  </datatypes><table x="366" y="32" name="verification">
 <row name="id" null="1" autoincrement="1">
 <datatype>int</datatype>
 <default>NULL</default></row>
@@ -62,11 +62,30 @@
 <row name="comments" null="1" autoincrement="0">
 <datatype>text</datatype>
 <default>NULL</default></row>
+<row name="metadata-jsonb" null="1" autoincrement="0">
+<datatype>text</datatype>
+<default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
-<table x="409" y="484" name="authority">
+<table x="680" y="172" name="verification_social_user">
+<row name="id" null="1" autoincrement="1">
+<datatype>tinyint</datatype>
+<default>NULL</default></row>
+<row name="id_verification" null="1" autoincrement="0">
+<datatype>int</datatype>
+<default>NULL</default><relation table="verification" row="id" />
+</row>
+<row name="id_social_user" null="1" autoincrement="0">
+<datatype>tinyint</datatype>
+<default>NULL</default><relation table="social_user" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="80" y="33" name="authority">
 <row name="id" null="1" autoincrement="1">
 <datatype>int</datatype>
 <default>NULL</default></row>
@@ -106,68 +125,34 @@
 <row name="notes" null="1" autoincrement="0">
 <datatype>text</datatype>
 <default>NULL</default></row>
-<key type="PRIMARY" name="">
-<part>id</part>
-</key>
-</table>
-<table x="1165" y="469" name="user_verification">
-<row name="id" null="1" autoincrement="1">
-<datatype>int</datatype>
-<default>NULL</default></row>
-<row name="id_verification" null="1" autoincrement="0">
-<datatype>int</datatype>
-<default>NULL</default><relation table="verification" row="id" />
-</row>
-<row name="id_socialnetwork" null="1" autoincrement="0">
-<datatype>smallint</datatype>
-<default>NULL</default><relation table="socialnetwork" row="id" />
-</row>
-<row name="social_login" null="1" autoincrement="0">
-<datatype>varchar(256)</datatype>
+<row name="metadata-jsonb" null="1" autoincrement="0">
+<datatype>text</datatype>
 <default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
-<table x="1629" y="303" name="tags">
-<row name="id" null="1" autoincrement="1">
-<datatype>uniqueidentifier</datatype>
-<default>NULL</default></row>
-<row name="tag" null="1" autoincrement="0">
-<datatype>varchar(512)</datatype>
-<default>NULL</default></row>
-<row name="first_coined" null="0" autoincrement="0">
-<datatype>datetime</datatype>
-<default>NULL</default></row>
-<key type="PRIMARY" name="">
-<part>id</part>
-</key>
-</table>
-<table x="969" y="632" name="socialnetwork">
-<row name="id" null="1" autoincrement="1">
-<datatype>smallint</datatype>
-<default>NULL</default></row>
-<row name="name" null="1" autoincrement="0">
-<datatype>varchar(256)</datatype>
-<default>NULL</default></row>
-<key type="PRIMARY" name="">
-<part>id</part>
-</key>
-</table>
-<table x="717" y="602" name="social_logins">
+<table x="373" y="238" name="social_user">
 <row name="id" null="1" autoincrement="1">
 <datatype>tinyint</datatype>
 <default>NULL</default></row>
-<row name="id_authority" null="1" autoincrement="0">
-<datatype>int</datatype>
-<default>NULL</default><relation table="authority" row="id" />
-</row>
-<row name="id_socialnetwork" null="1" autoincrement="0">
-<datatype>smallint</datatype>
-<default>NULL</default><relation table="socialnetwork" row="id" />
-</row>
-<row name="social_login" null="1" autoincrement="0">
-<datatype>varchar(256)</datatype>
+<row name="social_login" null="0" autoincrement="0">
+<datatype>nvarchar(512)</datatype>
+<default>'NULL'</default></row>
+<row name="metadata-jsonb" null="1" autoincrement="0">
+<datatype>text</datatype>
+<default>NULL</default></row>
+<row name="name" null="1" autoincrement="0">
+<datatype>nvarchar(512)</datatype>
+<default>NULL</default></row>
+<row name="bio" null="1" autoincrement="0">
+<datatype>text</datatype>
+<default>NULL</default></row>
+<row name="network" null="1" autoincrement="0">
+<datatype>varchar(512)</datatype>
+<default>NULL</default></row>
+<row name="subnetwork" null="1" autoincrement="0">
+<datatype>varchar(512)</datatype>
 <default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
