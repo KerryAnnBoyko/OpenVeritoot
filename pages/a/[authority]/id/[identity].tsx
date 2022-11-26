@@ -13,7 +13,11 @@ const Identity = () => {
         qualifications have been claimed: {JSON.stringify(qualifications)}
       </p>
 
-      <TestComponent authority={authority} identity={identity} qualifications={qualifications} />
+      <TestComponent
+        authority={authority as string}
+        identity={identity as string}
+        qualifications={qualifications as Record<string, string>}
+      />
     </div>
   );
 };

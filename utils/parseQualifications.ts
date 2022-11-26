@@ -1,6 +1,6 @@
 export const parseQualifications = (
   qualifications?: Record<string, string>
-): Record<string, string[]> => {
+): Record<string, string[]> | never => {
   if (!qualifications) {
     return {};
   }
@@ -12,7 +12,7 @@ export const parseQualifications = (
     return output;
   } catch (e) {
     console.error(e);
-    throw new Error(e);
+    throw new Error("Error");
   }
 };
 
