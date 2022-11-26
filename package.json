@@ -8,6 +8,11 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "imports": {
+    "#components/*": "./components/*",
+    "#utils/*": "./utils/*",
+    "#types/*": "./types/*"
+  },
   "dependencies": {
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",

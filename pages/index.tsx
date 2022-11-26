@@ -16,6 +16,12 @@ export default function Home() {
           Welcome to <a href="https://veritoot.com">Veritoot</a>
         </h1>
 
+        <p>
+          <a href="./a/test-authority/id/@test-identity@mastodon.social?test-authority=test,test1,test2&second-authrority=test3,test4,test5">
+            This is a test page.
+          </a>
+        </p>
+
         <p className={styles.description}>
           So, obviously this is Next.js boilerplate. Waiting for the domain to
           carry over.{" "}
