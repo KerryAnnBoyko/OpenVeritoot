@@ -1,4 +1,4 @@
-import { parseQualifications } from "#utils/parseQualifications";
+import { parseQualifications } from "@/utils/parseQualifications";
 
 export const TestComponent = ({
   authority,

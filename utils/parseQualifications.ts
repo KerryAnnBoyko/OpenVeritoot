@@ -5,14 +5,14 @@ export const parseQualifications = (
     return {};
   }
   try {
-    const output = {};
+    const output: Record<string, string[]> = {};
     for (let auth in qualifications) {
       output[auth] = qualifications[auth].split(",");
     }
     return output;
   } catch (e) {
     console.error(e);
-    return e;
+    throw new Error(e);
   }
 };
 

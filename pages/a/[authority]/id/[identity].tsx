@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import TestComponent from "#components/TestComponent";
+import TestComponent from "@/components/TestComponent";
 
 const Identity = () => {
   const router = useRouter();
