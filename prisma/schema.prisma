@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model administrator {
+  id          Int         @id @default(autoincrement())
+  login       String      @unique
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  backupEmail String
+  authority   authority[]
+  contact     contact?    @relation(fields: [contactId], references: [id])
+  contactId   Int?
+}
+
+model authority {
+  id                        Int                         @id @default(autoincrement())
+  login                     String                      @unique
+  organizationName          String
+  organizationDescription   String?
+  createdAt                 DateTime                    @default(now())
+  updatedAt                 DateTime                    @updatedAt
+  authorizedActiveUntil     DateTime                    @default(dbgenerated("NOW() + interval '1 year'"))
+  address                   String?
+  notes                     String?
+  createdBy                 administrator               @relation(fields: [createdByAdministratorId], references: [id])
+  createdByAdministratorId  Int
+  verifications             verification[]
+  verificationsOnSocialUser verificationsOnSocialUser[]
+  contacts                  contact[]
+  socialUser                socialUser[]
+}
+
+model contact {
+  id            Int             @id @default(autoincrement())
+  email         String
+  name          String?
+  phone         String?
+  text          String?
+  notes         String?
+  authority     authority?      @relation(fields: [authorityId], references: [id])
+  authorityId   Int?
+  administrator administrator[]
+  socialUser    socialUser[]
+}
+
+model verification {
+  id          Int                         @id @default(autoincrement())
+  createdAt   DateTime                    @default(now())
+  updatedAt   DateTime                    @updatedAt
+  name        String                      @db.VarChar(255)
+  description String
+  comments    String?
+  authority   authority?                  @relation(fields: [authorityId], references: [id])
+  authorityId Int?
+  socialUsers verificationsOnSocialUser[]
+}
+
+model socialUser {
+  id                   Int                         @id @default(autoincrement())
+  createdAt            DateTime                    @default(now())
+  updatedAt            DateTime                    @updatedAt
+  social_login         String                      @unique
+  name                 String
+  bio                  String?
+  network              String                      @db.VarChar(255)
+  subnetwork           String?
+  createdBy            authority                   @relation(fields: [createdByAuthorityId], references: [id])
+  createdByAuthorityId Int
+  verifications        verificationsOnSocialUser[]
+  contact              contact?                    @relation(fields: [contactId], references: [id])
+  contactId            Int?
+}
+
+model verificationsOnSocialUser {
+  verification   verification @relation(fields: [verificationId], references: [id])
+  verificationId Int
+  socialUser     socialUser   @relation(fields: [socialUserId], references: [id])
+  socialUserId   Int
+  assignedBy     authority    @relation(fields: [authorityId], references: [id])
+  authorityId    Int
+  assignedAt     DateTime     @default(now())
+
+  @@id([verificationId, socialUserId, authorityId])
+}
