@@ -22,6 +22,7 @@
     "typescript": "4.8.4"
   },
   "devDependencies": {
+    "jest-mock-extended": "^3.0.1",
     "prettier-plugin-prisma": "^4.4.0",
     "prisma": "^4.6.1"
   }
