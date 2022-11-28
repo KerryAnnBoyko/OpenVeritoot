@@ -65,7 +65,7 @@ model socialUser {
   id                   Int                         @id @default(autoincrement())
   createdAt            DateTime                    @default(now())
   updatedAt            DateTime                    @updatedAt
-  social_login         String                      @unique
+  socialLogin          String                      @unique
   name                 String
   bio                  String?
   network              String                      @db.VarChar(255)

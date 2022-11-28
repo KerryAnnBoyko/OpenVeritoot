@@ -57,7 +57,7 @@ CREATE TABLE "socialUser" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "social_login" TEXT NOT NULL,
+    "socialLogin" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "bio" TEXT,
     "network" VARCHAR(255) NOT NULL,
@@ -85,7 +85,7 @@ CREATE UNIQUE INDEX "administrator_login_key" ON "administrator"("login");
 CREATE UNIQUE INDEX "authority_login_key" ON "authority"("login");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "socialUser_social_login_key" ON "socialUser"("social_login");
+CREATE UNIQUE INDEX "socialUser_socialLogin_key" ON "socialUser"("socialLogin");
 
 -- AddForeignKey
 ALTER TABLE "administrator" ADD CONSTRAINT "administrator_contactId_fkey" FOREIGN KEY ("contactId") REFERENCES "contact"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -113,4 +113,3 @@ ALTER TABLE "verificationsOnSocialUser" ADD CONSTRAINT "verificationsOnSocialUse
 
 -- AddForeignKey
 ALTER TABLE "verificationsOnSocialUser" ADD CONSTRAINT "verificationsOnSocialUser_authorityId_fkey" FOREIGN KEY ("authorityId") REFERENCES "authority"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
