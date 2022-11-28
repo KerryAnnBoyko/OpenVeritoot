@@ -19,20 +19,22 @@ model administrator {
 }
 
 model authority {
-  id                        Int                         @id @default(autoincrement())
-  organizationName          String
-  organizationDescription   String?
-  createdAt                 DateTime                    @default(now())
-  updatedAt                 DateTime                    @updatedAt
-  authorizedActiveUntil     DateTime                    @default(dbgenerated("NOW() + interval '1 year'"))
-  address                   String?
-  notes                     String?
-  createdBy                 administrator               @relation(fields: [createdByAdministratorId], references: [id])
-  createdByAdministratorId  Int
-  verifications             verification[]
-  verificationsOnSocialUser verificationsOnSocialUser[]
-  contacts                  contact[]
-  socialUser                socialUser[]
+  id                           Int                            @id @default(autoincrement())
+  organizationName             String
+  organizationDescription      String?
+  createdAt                    DateTime                       @default(now())
+  updatedAt                    DateTime                       @updatedAt
+  authorizedActiveUntil        DateTime                       @default(dbgenerated("NOW() + interval '1 year'"))
+  address                      String?
+  notes                        String?
+  createdBy                    administrator                  @relation(fields: [createdByAdministratorId], references: [id])
+  createdByAdministratorId     Int
+  verifications                verification[]
+  verificationsOnSocialAccount verificationsOnSocialAccount[]
+  contacts                     contact[]
+  socialAccount                socialAccount[]
+  identity                     identity[]
+  verificationsOnIdentity      verificationsOnIdentity[]
 }
 
 model contact {
@@ -45,45 +47,69 @@ model contact {
   authority     authority?      @relation(fields: [authorityId], references: [id])
   authorityId   Int?
   administrator administrator[]
-  socialUser    socialUser[]
+  socialAccount socialAccount[]
 }
 
 model verification {
-  id          Int                         @id @default(autoincrement())
-  createdAt   DateTime                    @default(now())
-  updatedAt   DateTime                    @updatedAt
-  name        String                      @db.VarChar(255)
-  description String
-  comments    String?
-  authority   authority?                  @relation(fields: [authorityId], references: [id])
-  authorityId Int?
-  socialUsers verificationsOnSocialUser[]
+  id                      Int                            @id @default(autoincrement())
+  createdAt               DateTime                       @default(now())
+  updatedAt               DateTime                       @updatedAt
+  name                    String                         @db.VarChar(255)
+  description             String
+  comments                String?
+  authority               authority?                     @relation(fields: [authorityId], references: [id])
+  authorityId             Int?
+  socialAccounts          verificationsOnSocialAccount[]
+  verificationsOnIdentity verificationsOnIdentity[]
 }
 
-model socialUser {
-  id                   Int                         @id @default(autoincrement())
-  createdAt            DateTime                    @default(now())
-  updatedAt            DateTime                    @updatedAt
-  socialLogin          String                      @unique
-  name                 String
-  bio                  String?
-  network              String                      @db.VarChar(255)
-  subnetwork           String?
-  createdBy            authority                   @relation(fields: [createdByAuthorityId], references: [id])
+model identity {
+  id                      Int                       @id @default(autoincrement())
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @updatedAt
+  name                    String
+  bio                     String?
+  createdBy               authority                 @relation(fields: [createdByAuthorityId], references: [id])
+  createdByAuthorityId    Int
+  verificationsOnIdentity verificationsOnIdentity[]
+  socialAccounts          socialAccount[]
+}
+
+model socialAccount {
+  id                   Int                            @id @default(autoincrement())
+  createdAt            DateTime                       @default(now())
+  updatedAt            DateTime                       @updatedAt
+  socialLogin          String                         @unique // forex: @carrieannecoder@twitter.com @kerryanncoder@tech.lgbt
+  network              String                         @db.VarChar(255)
+  createdBy            authority                      @relation(fields: [createdByAuthorityId], references: [id])
   createdByAuthorityId Int
-  verifications        verificationsOnSocialUser[]
-  contact              contact?                    @relation(fields: [contactId], references: [id])
+  verifications        verificationsOnSocialAccount[]
+  contact              contact?                       @relation(fields: [contactId], references: [id])
   contactId            Int?
+  identity             identity?                      @relation(fields: [identityId], references: [id])
+  identityId           Int?
 }
 
-model verificationsOnSocialUser {
+model verificationsOnIdentity {
   verification   verification @relation(fields: [verificationId], references: [id])
   verificationId Int
-  socialUser     socialUser   @relation(fields: [socialUserId], references: [id])
-  socialUserId   Int
+  identity       identity     @relation(fields: [identityId], references: [id])
+  identityId     Int
   assignedBy     authority    @relation(fields: [authorityId], references: [id])
   authorityId    Int
   assignedAt     DateTime     @default(now())
 
-  @@id([verificationId, socialUserId, authorityId])
+  @@id([verificationId, identityId, authorityId])
+}
+
+model verificationsOnSocialAccount {
+  verification    verification  @relation(fields: [verificationId], references: [id])
+  verificationId  Int
+  socialAccount   socialAccount @relation(fields: [socialAccountId], references: [id])
+  socialAccountId Int
+  assignedBy      authority     @relation(fields: [authorityId], references: [id])
+  authorityId     Int
+  assignedAt      DateTime      @default(now())
+
+  @@id([verificationId, socialAccountId, authorityId])
 }
