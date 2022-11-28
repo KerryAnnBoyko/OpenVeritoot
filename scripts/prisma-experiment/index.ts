@@ -10,8 +10,8 @@ async function createTestAdmin() {
         create: {
           email: "kerry.ann.boyko@gmail.com",
           name: "Kerry Ann Boyko",
-          phone: "+44 0 753 963 7675",
-          text: `+44 0 753 963 7675`,
+          phone: "+44 0 XXX XXX XXXX",
+          text: `+44 0 XXX XXX XXXX`,
           notes: `Creator of Veritoot and OpenVeritoot`,
         },
       },
